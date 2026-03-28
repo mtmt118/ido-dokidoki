@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>異動ドキドキ</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap');
+
+:root {
+–cream: #faf6f0;
+–warm-white: #fffdf9;
+–text-dark: #2a2118;
+–text-mid: #5a4a3a;
+–text-light: #9a8a7a;
+–accent: #c8705a;
+–accent-light: #e8a898;
+–sky: #b8d4e8;
+–sky-deep: #7aaac8;
+–lobby: #d4c8b8;
+–office: #c8d4c0;
+–shadow: rgba(42,33,24,0.15);
+}
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+font-family: ‘Noto Serif JP’, serif;
+background: var(–text-dark);
+display: flex;
+align-items: center;
+justify-content: center;
+min-height: 100vh;
+overflow: hidden;
+}
+
+#game {
+width: 800px;
+height: 560px;
+position: relative;
+overflow: hidden;
+border-radius: 4px;
+box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+}
+
+/* ========== BACKGROUNDS ========== */
+.bg {
+position: absolute;
+inset: 0;
+transition: opacity 1s ease;
+opacity: 0;
+}
+.bg.active { opacity: 1; }
+
+#bg-title {
+background: linear-gradient(160deg, #ffecd2 0%, #fcb69f 40%, #c8705a 100%);
+}
+#bg-title::before {
+content: ‘’;
+position: absolute;
+inset: 0;
+background: radial-gradient(ellipse at 30% 60%, rgba(255,255,255,0.3) 0%, transparent 60%);
+}
+
+#bg-sky {
+background: linear-gradient(180deg, #a8d8f0 0%, #d4ecf8 50%, #f0f8e8 100%);
+}
+#bg-sky::after {
+content: ‘☁ ☁  ☁’;
+position: absolute;
+top: 80px;
+left: 60px;
+font-size: 28px;
+color: rgba(255,255,255,0.9);
+letter-spacing: 20px;
+animation: clouds 20s linear infinite;
+}
+@keyframes clouds {
+from { transform: translateX(0); }
+to { transform: translateX(60px); }
+}
+
+#bg-lobby {
+background: linear-gradient(180deg, #e8e0d8 0%, #d4c8b8 60%, #c0b4a4 100%);
+}
+#bg-lobby::before {
+content: ‘’;
+position: absolute;
+bottom: 0; left: 0; right: 0;
+height: 200px;
+background: linear-gradient(180deg, transparent, rgba(180,160,140,0.4));
+}
+
+#bg-office {
+background: linear-gradient(180deg, #e0e8d8 0%, #c8d4c0 60%, #b8c4b0 100%);
+}
+#bg-office::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 120px;
+background: linear-gradient(180deg, rgba(200,212,192,0.8), transparent);
+}
+
+#bg-question {
+background: linear-gradient(135deg, #2a2118 0%, #3a3128 50%, #2a2118 100%);
+}
+#bg-question::before {
+content: ‘’;
+position: absolute;
+inset: 0;
+background: radial-gradient(ellipse at 50% 30%, rgba(200,112,90,0.15) 0%, transparent 60%);
+}
+
+#bg-end {
+background: linear-gradient(160deg, #2a2118 0%, #4a3828 50%, #c8705a 200%);
+}
+
+/* ========== TITLE SCREEN ========== */
+#title-screen {
+position: absolute;
+inset: 0;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 0;
+z-index: 10;
+opacity: 0;
+transition: opacity 1s ease;
+}
+#title-screen.active { opacity: 1; }
+
+.title-deco {
+width: 60px;
+height: 2px;
+background: rgba(255,255,255,0.6);
+margin-bottom: 24px;
+}
+
+.title-main {
+font-size: 52px;
+font-weight: 700;
+color: white;
+text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+letter-spacing: 8px;
+margin-bottom: 8px;
+}
+
+.title-sub {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 13px;
+font-weight: 300;
+color: rgba(255,255,255,0.7);
+letter-spacing: 6px;
+margin-bottom: 48px;
+}
+
+.start-btn {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 14px;
+font-weight: 400;
+color: white;
+background: rgba(255,255,255,0.15);
+border: 1px solid rgba(255,255,255,0.4);
+padding: 14px 48px;
+border-radius: 40px;
+cursor: pointer;
+letter-spacing: 4px;
+backdrop-filter: blur(8px);
+transition: all 0.3s ease;
+margin-bottom: 16px;
+}
+.start-btn:hover {
+background: rgba(255,255,255,0.25);
+transform: translateY(-2px);
+box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+.admin-link {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 11px;
+color: rgba(255,255,255,0.35);
+cursor: pointer;
+letter-spacing: 2px;
+text-decoration: underline;
+transition: color 0.2s;
+}
+.admin-link:hover { color: rgba(255,255,255,0.6); }
+
+/* ========== SCENE LABEL ========== */
+.scene-label {
+position: absolute;
+top: 20px;
+left: 0; right: 0;
+text-align: center;
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 12px;
+font-weight: 300;
+color: rgba(255,255,255,0.8);
+letter-spacing: 4px;
+z-index: 5;
+text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+opacity: 0;
+transition: opacity 0.5s ease;
+}
+.scene-label.visible { opacity: 1; }
+
+/* ========== DIALOGUE BOX ========== */
+#dialogue-area {
+position: absolute;
+bottom: 0; left: 0; right: 0;
+z-index: 20;
+padding: 0 24px 24px;
+opacity: 0;
+transition: opacity 0.5s ease;
+transform: translateY(0);
+}
+#dialogue-area.visible { opacity: 1; }
+
+.speaker-name {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 13px;
+font-weight: 500;
+color: var(–accent);
+background: rgba(250,246,240,0.95);
+display: inline-block;
+padding: 4px 16px;
+border-radius: 4px 4px 0 0;
+margin-left: 4px;
+letter-spacing: 2px;
+}
+
+.dialogue-box {
+background: rgba(250,246,240,0.95);
+backdrop-filter: blur(12px);
+border-radius: 0 8px 8px 8px;
+padding: 20px 24px 16px;
+min-height: 110px;
+cursor: pointer;
+position: relative;
+box-shadow: 0 -4px 24px rgba(0,0,0,0.15);
+}
+.dialogue-box.narration {
+border-radius: 8px;
+border-left: 3px solid var(–accent-light);
+}
+
+.dialogue-text {
+font-size: 15px;
+line-height: 1.9;
+color: var(–text-dark);
+font-weight: 300;
+}
+
+.click-hint {
+position: absolute;
+bottom: 12px;
+right: 16px;
+font-size: 11px;
+color: var(–text-light);
+font-family: ‘Noto Sans JP’, sans-serif;
+animation: blink 1.5s ease-in-out infinite;
+}
+@keyframes blink {
+0%, 100% { opacity: 0.4; }
+50% { opacity: 1; }
+}
+
+/* ========== QUESTION SCREEN ========== */
+#question-screen {
+position: absolute;
+inset: 0;
+z-index: 30;
+display: flex;
+flex-direction: column;
+padding: 28px 40px 20px;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.5s ease;
+overflow: hidden;
+}
+#question-screen.active {
+opacity: 1;
+pointer-events: all;
+}
+
+.q-header {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 11px;
+font-weight: 300;
+color: var(–accent-light);
+letter-spacing: 4px;
+margin-bottom: 12px;
+}
+
+.q-text {
+font-size: 18px;
+font-weight: 400;
+color: white;
+line-height: 1.7;
+margin-bottom: 28px;
+flex-shrink: 0;
+}
+
+/* Free text */
+.q-textarea {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 14px;
+font-weight: 300;
+color: var(–text-dark);
+background: rgba(255,255,255,0.92);
+border: none;
+border-radius: 8px;
+padding: 16px 20px;
+resize: none;
+flex: 1;
+margin-bottom: 16px;
+line-height: 1.8;
+outline: none;
+box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+.q-textarea:focus {
+box-shadow: 0 4px 20px rgba(0,0,0,0.2), 0 0 0 2px var(–accent-light);
+}
+
+/* Single select */
+.q-options {
+display: flex;
+flex-direction: column;
+gap: 8px;
+margin-bottom: 16px;
+overflow-y: auto;
+flex: 1;
+max-height: 300px;
+padding-right: 4px;
+}
+.q-options::-webkit-scrollbar { width: 4px; }
+.q-options::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 2px; }
+.q-options::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+
+.q-option {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 13px;
+font-weight: 300;
+color: rgba(255,255,255,0.85);
+background: rgba(255,255,255,0.08);
+border: 1px solid rgba(255,255,255,0.15);
+border-radius: 8px;
+padding: 12px 20px;
+cursor: pointer;
+transition: all 0.2s ease;
+text-align: left;
+}
+.q-option:hover {
+background: rgba(255,255,255,0.15);
+border-color: rgba(200,112,90,0.5);
+}
+.q-option.selected {
+background: rgba(200,112,90,0.25);
+border-color: var(–accent);
+color: white;
+}
+
+/* Likert */
+.likert-wrap {
+margin-bottom: 20px;
+flex: 1;
+display: flex;
+flex-direction: column;
+justify-content: center;
+}
+
+.likert-labels {
+display: flex;
+justify-content: space-between;
+margin-bottom: 12px;
+}
+.likert-label {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 12px;
+color: rgba(255,255,255,0.6);
+font-weight: 300;
+}
+
+.likert-buttons {
+display: flex;
+justify-content: center;
+gap: 16px;
+}
+.likert-btn {
+width: 48px;
+height: 48px;
+border-radius: 50%;
+border: 1px solid rgba(255,255,255,0.25);
+background: rgba(255,255,255,0.08);
+color: rgba(255,255,255,0.7);
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 13px;
+cursor: pointer;
+transition: all 0.2s ease;
+}
+.likert-btn:hover {
+background: rgba(255,255,255,0.18);
+border-color: var(–accent-light);
+}
+.likert-btn.selected {
+background: var(–accent);
+border-color: var(–accent);
+color: white;
+}
+
+.q-submit {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 13px;
+font-weight: 400;
+color: white;
+background: var(–accent);
+border: none;
+border-radius: 40px;
+padding: 12px 40px;
+cursor: pointer;
+letter-spacing: 3px;
+align-self: flex-end;
+transition: all 0.2s ease;
+}
+.q-submit:hover {
+background: #b06048;
+transform: translateY(-1px);
+}
+.q-submit:disabled {
+opacity: 0.4;
+cursor: not-allowed;
+transform: none;
+}
+
+/* ========== END SCREEN ========== */
+#end-screen {
+position: absolute;
+inset: 0;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+z-index: 40;
+opacity: 0;
+transition: opacity 1s ease;
+pointer-events: none;
+}
+#end-screen.active {
+opacity: 1;
+pointer-events: all;
+}
+.end-text {
+font-size: 36px;
+font-weight: 700;
+color: white;
+letter-spacing: 8px;
+text-shadow: 0 4px 20px rgba(0,0,0,0.4);
+margin-bottom: 32px;
+}
+.end-sub {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 12px;
+color: rgba(255,255,255,0.5);
+letter-spacing: 4px;
+margin-bottom: 40px;
+}
+.replay-btn {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 13px;
+color: rgba(255,255,255,0.7);
+background: rgba(255,255,255,0.1);
+border: 1px solid rgba(255,255,255,0.3);
+border-radius: 40px;
+padding: 10px 32px;
+cursor: pointer;
+letter-spacing: 3px;
+transition: all 0.3s ease;
+}
+.replay-btn:hover {
+background: rgba(255,255,255,0.2);
+}
+
+/* ========== ADMIN ========== */
+#admin-screen {
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.85);
+z-index: 100;
+display: none;
+align-items: center;
+justify-content: center;
+}
+#admin-screen.active { display: flex; }
+
+.admin-modal {
+background: var(–cream);
+border-radius: 12px;
+width: 700px;
+max-height: 80vh;
+overflow-y: auto;
+padding: 40px;
+}
+
+.admin-title {
+font-size: 20px;
+font-weight: 700;
+color: var(–text-dark);
+letter-spacing: 4px;
+margin-bottom: 24px;
+padding-bottom: 16px;
+border-bottom: 2px solid var(–accent-light);
+}
+
+.admin-pw-wrap {
+display: flex;
+flex-direction: column;
+gap: 12px;
+margin-bottom: 24px;
+}
+
+.admin-pw-input {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 14px;
+border: 1px solid #ddd;
+border-radius: 8px;
+padding: 12px 16px;
+outline: none;
+}
+.admin-pw-input:focus {
+border-color: var(–accent);
+}
+
+.admin-pw-btn {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 13px;
+background: var(–accent);
+color: white;
+border: none;
+border-radius: 8px;
+padding: 12px;
+cursor: pointer;
+letter-spacing: 2px;
+}
+
+.admin-err {
+color: var(–accent);
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 12px;
+display: none;
+}
+
+.admin-close {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 12px;
+color: var(–text-light);
+background: none;
+border: none;
+cursor: pointer;
+margin-top: 16px;
+letter-spacing: 2px;
+}
+
+.response-list { display: none; }
+.response-list.visible { display: block; }
+
+.response-item {
+margin-bottom: 24px;
+padding-bottom: 20px;
+border-bottom: 1px solid #e8e0d8;
+}
+.response-item:last-child { border-bottom: none; }
+
+.response-q {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 12px;
+font-weight: 500;
+color: var(–accent);
+letter-spacing: 1px;
+margin-bottom: 6px;
+}
+.response-a {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 14px;
+color: var(–text-dark);
+line-height: 1.7;
+white-space: pre-wrap;
+}
+.no-responses {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 14px;
+color: var(–text-light);
+text-align: center;
+padding: 40px 0;
+}
+
+/* ========== FADE OVERLAY ========== */
+#fade {
+position: absolute;
+inset: 0;
+background: black;
+z-index: 50;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.8s ease;
+}
+#fade.dark { opacity: 1; }
+</style>
+
+</head>
+<body>
+
+<div id="game">
+
+  <!-- Backgrounds -->
+
+  <div class="bg active" id="bg-title"></div>
+  <div class="bg" id="bg-sky"></div>
+  <div class="bg" id="bg-lobby"></div>
+  <div class="bg" id="bg-office"></div>
+  <div class="bg" id="bg-question"></div>
+  <div class="bg" id="bg-end"></div>
+
+  <!-- Scene label -->
+
+  <div class="scene-label" id="scene-label"></div>
+
+  <!-- Fade overlay -->
+
+  <div id="fade"></div>
+
+  <!-- Title Screen -->
+
+  <div id="title-screen" class="active">
+    <div class="title-deco"></div>
+    <div class="title-main">異動ドキドキ</div>
+    <div class="title-sub">IDO DOKIDOKI</div>
+    <button class="start-btn" onclick="startGame()">は じ め る</button>
+    <span class="admin-link" onclick="openAdmin()">管理者ページ</span>
+  </div>
+
+  <!-- Dialogue Area -->
+
+  <div id="dialogue-area" onclick="nextStep()">
+    <div class="speaker-name" id="speaker-name">まつこ</div>
+    <div class="dialogue-box" id="dialogue-box">
+      <div class="dialogue-text" id="dialogue-text"></div>
+      <span class="click-hint">▼</span>
+    </div>
+  </div>
+
+  <!-- Question Screen -->
+
+  <div id="question-screen">
+    <div class="q-header">Q U E S T I O N</div>
+    <div class="q-text" id="q-text"></div>
+    <div id="q-input-area"></div>
+    <button class="q-submit" id="q-submit" onclick="submitAnswer()" disabled>回 答 す る</button>
+  </div>
+
+  <!-- End Screen -->
+
+  <div id="end-screen">
+    <div class="end-text">終わり</div>
+    <div class="end-sub">ご回答ありがとうございました</div>
+    <button class="replay-btn" onclick="location.reload()">も う い ち ど</button>
+  </div>
+
+</div>
+
+<!-- Admin Screen -->
+
+<div id="admin-screen">
+  <div class="admin-modal">
+    <div class="admin-title">管理者ページ</div>
+
+```
+<div class="admin-pw-wrap" id="pw-wrap">
+  <input type="password" class="admin-pw-input" id="pw-input" placeholder="パスワードを入力" onkeydown="if(event.key==='Enter')checkPw()">
+  <button class="admin-pw-btn" onclick="checkPw()">ロック解除</button>
+  <div class="admin-err" id="pw-err">パスワードが違います</div>
+</div>
+
+<div class="response-list" id="response-list"></div>
+
+<button class="admin-close" onclick="closeAdmin()">✕ 閉じる</button>
+```
+
+  </div>
+</div>
+
+<script>
+const ADMIN_PW = 'admin1234'; // ← パスワードをここで変更できます
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbywLD5JXoZylT90ilvsd8480maMaBblnnGWB2IOk62eX3LHaW4-8yvvE_oCYijzN1Sg/exec';
+
+const QUESTIONS = [
+  { id: 'q1', text: 'このグループが目指している成果・理想的な状態を教えてください。', type: 'free' },
+  { id: 'q2', text: 'このグループが抱えている課題を教えてください。どんな解決方法を考えているかも教えてください。', type: 'free' },
+  { id: 'q3', text: 'スピード重視か、丁寧さ重視か', type: 'likert', left: 'スピード重視', right: '丁寧さ重視' },
+  { id: 'q4', text: '革新重視か、堅実重視か', type: 'likert', left: '革新重視', right: '堅実重視' },
+  { id: 'q5', text: '新しいメンバーに期待することは何ですか？', type: 'free' },
+  { id: 'q6', text: 'このグループで評価される行動は何ですか？また、NGな行動は何ですか？', type: 'free' },
+  { id: 'q7', text: '報連相のタイミングはいつが好ましいですか？', type: 'select', options: ['急ぎじゃなければ一日の最後にまとめて', '都度聞いてくれてOK', 'そもそも極力コミュニケーションを取りたくない'] },
+  { id: 'q8', text: '仕事ではどのような形でのコミュニケーションを望みますか？', type: 'select', options: ['チャット', '口頭'] },
+  { id: 'q9', text: 'どのような流れで話したら良いですか？', type: 'select', options: ['背景→結論', '結論→背景'] },
+  { id: 'q10', text: '仕事ではどんな風に話されるのが好ましいですか？', type: 'likert', left: '事実ベースで簡潔に', right: '愛想良く感情を交えて' },
+  { id: 'q11', text: '最も好ましくない人物像はどれですか？', type: 'select', options: [
+    '性格に問題はないが、とにかく要領が悪くて仕事の進みが遅い',
+    '話の筋は通っているが、自分は口ばかりで行動しない',
+    '意欲があるのは分かるが、結局何を言いたいのか分からない、ダラダラ話されて時間ばかり食う',
+    '仕事は最低限こなしてくれるが、いかんせんプライドが高く扱いづらい',
+    '一生懸命だが、感情の起伏が激しい',
+    '要領良く業務を進めてくれるが、ミスがあると責任転嫁しがち'
+  ]}
+];
+
+// Story steps
+const STEPS = [
+  { type: 'scene', bg: 'sky', label: '〜４月〜　始まりの時……' },
+  { type: 'narration', text: '〜４月〜　始まりの時……' },
+  { type: 'scene', bg: 'lobby', label: '１階ロビー' },
+  { type: 'dialogue', speaker: 'まつこ', text: 'ち、遅刻だ〜！' },
+  { type: 'narration', text: '私の名前はまつこ。この春、総務部の経営戦略グループに異動になった。新しい環境でどんなことに挑戦できるのか、ワクワクする気持ちがある一方で、私の心は晴れない。' },
+  { type: 'narration', text: 'なんでも、経営戦略グループは東海トップクラスの優秀な人材が集う部署らしくて、鈍臭い私がやっていけるのか、ちょっと心配…。' },
+  { type: 'narration', text: 'でも、消極的な態度は良くない。同じグループで働くH崎先輩からも「受け身のやつはいらないから」って言われてるし…。' },
+  { type: 'dialogue', speaker: 'まつこ', text: 'よ〜し、積極的にコミュニケーション取るぞ！' },
+  { type: 'narration', text: '私は9階の事務所まで階段を駆け抜けた。' },
+  { type: 'scene', bg: 'office', label: '事務所' },
+  { type: 'dialogue', speaker: 'まつこ', text: 'あ、あの初めまして。本日から異動になったまつこです。' },
+  { type: 'dialogue', speaker: 'まつこ', text: 'ご迷惑をおかけすることも多いと思うんですけど、精一杯頑張りますので、ご鞭撻のほどよろしくお願いします！' },
+  { type: 'dialogue', speaker: 'まつこ', text: '……あの、少しでも早くグループの役に立つためにも、グループ長のS脇先輩に聞きたいことがありまして……' },
+  { type: 'dialogue', speaker: 'まつこ', text: 'まずは、グループや業務のビジョンを教えてください！' },
+  { type: 'question', qid: 'q1' },
+  { type: 'dialogue', speaker: 'まつこ', text: '……なるほど、なるほど' },
+  { type: 'question', qid: 'q2' },
+  { type: 'dialogue', speaker: 'まつこ', text: '……なかなか大変ですね' },
+  { type: 'dialogue', speaker: 'まつこ', text: '次は、S脇先輩の仕事の価値観を教えてください！' },
+  { type: 'question', qid: 'q3' },
+  { type: 'question', qid: 'q4' },
+  { type: 'dialogue', speaker: 'まつこ', text: '……ふむふむ、業務にあたる際の参考にします！' },
+  { type: 'question', qid: 'q5' },
+  { type: 'question', qid: 'q6' },
+  { type: 'dialogue', speaker: 'まつこ', text: 'なるほど、頑張ります！' },
+  { type: 'dialogue', speaker: 'まつこ', text: '次は、S脇先輩のコミュニケーションスタイルについて教えてください' },
+  { type: 'question', qid: 'q7' },
+  { type: 'question', qid: 'q8' },
+  { type: 'question', qid: 'q9' },
+  { type: 'question', qid: 'q10' },
+  { type: 'question', qid: 'q11' },
+  { type: 'dialogue', speaker: 'まつこ', text: '……そうなんですね、気をつけます！' },
+  { type: 'dialogue', speaker: 'まつこ', text: '……S脇先輩、色々教えていただきありがとうございます。とても参考になりました！' },
+  { type: 'dialogue', speaker: 'まつこ', text: '少しでも早くグループの役に立てるよう頑張ります！これからよろしくお願いします！' },
+  { type: 'end' }
+];
+
+let stepIndex = 0;
+let currentAnswer = null;
+let answers = {};
+
+function loadAnswers() {
+  try {
+    const saved = localStorage.getItem('ido_answers');
+    if (saved) answers = JSON.parse(saved);
+  } catch(e) {}
+}
+function saveAnswers() {
+  try {
+    localStorage.setItem('ido_answers', JSON.stringify(answers));
+  } catch(e) {}
+}
+
+loadAnswers();
+
+function setBg(name) {
+  document.querySelectorAll('.bg').forEach(b => b.classList.remove('active'));
+  const el = document.getElementById('bg-' + name);
+  if (el) el.classList.add('active');
+}
+
+function setSceneLabel(text) {
+  const el = document.getElementById('scene-label');
+  el.textContent = text;
+  el.classList.add('visible');
+  setTimeout(() => el.classList.remove('visible'), 3000);
+}
+
+function showDialogue(speaker, text, isNarration) {
+  const area = document.getElementById('dialogue-area');
+  const nameEl = document.getElementById('speaker-name');
+  const box = document.getElementById('dialogue-box');
+  const textEl = document.getElementById('dialogue-text');
+
+  hideQuestion();
+
+  if (isNarration) {
+    nameEl.style.display = 'none';
+    box.classList.add('narration');
+  } else {
+    nameEl.style.display = 'inline-block';
+    nameEl.textContent = speaker;
+    box.classList.remove('narration');
+  }
+
+  textEl.textContent = text;
+  area.classList.add('visible');
+}
+
+function hideDialogue() {
+  document.getElementById('dialogue-area').classList.remove('visible');
+}
+
+function showQuestion(qid) {
+  const q = QUESTIONS.find(x => x.id === qid);
+  if (!q) return;
+
+  hideDialogue();
+  setBg('question');
+
+  document.getElementById('q-text').textContent = q.text;
+  const inputArea = document.getElementById('q-input-area');
+  inputArea.innerHTML = '';
+  currentAnswer = null;
+
+  const submitBtn = document.getElementById('q-submit');
+  submitBtn.disabled = true;
+
+  if (q.type === 'free') {
+    const ta = document.createElement('textarea');
+    ta.className = 'q-textarea';
+    ta.placeholder = 'こちらに回答を入力してください…';
+    ta.rows = 5;
+    ta.oninput = () => {
+      currentAnswer = ta.value;
+      submitBtn.disabled = !ta.value.trim();
+    };
+    inputArea.appendChild(ta);
+  } else if (q.type === 'select') {
+    const wrap = document.createElement('div');
+    wrap.className = 'q-options';
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'q-option';
+      btn.textContent = (i+1) + '. ' + opt;
+      btn.onclick = () => {
+        wrap.querySelectorAll('.q-option').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        currentAnswer = opt;
+        submitBtn.disabled = false;
+      };
+      wrap.appendChild(btn);
+    });
+    inputArea.appendChild(wrap);
+  } else if (q.type === 'likert') {
+    const wrap = document.createElement('div');
+    wrap.className = 'likert-wrap';
+    const labels = document.createElement('div');
+    labels.className = 'likert-labels';
+    labels.innerHTML = `<span class="likert-label">${q.left}</span><span class="likert-label">${q.right}</span>`;
+    const btns = document.createElement('div');
+    btns.className = 'likert-buttons';
+    [1,2,3,4,5].forEach(n => {
+      const btn = document.createElement('button');
+      btn.className = 'likert-btn';
+      btn.textContent = n;
+      btn.onclick = () => {
+        btns.querySelectorAll('.likert-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        currentAnswer = n + '（' + q.left + ' ←→ ' + q.right + '）';
+        submitBtn.disabled = false;
+      };
+      btns.appendChild(btn);
+    });
+    wrap.appendChild(labels);
+    wrap.appendChild(btns);
+    inputArea.appendChild(wrap);
+  }
+
+  document.getElementById('question-screen').classList.add('active');
+}
+
+function hideQuestion() {
+  document.getElementById('question-screen').classList.remove('active');
+}
+
+function submitAnswer() {
+  const step = STEPS[stepIndex];
+  if (step.type !== 'question') return;
+  const q = QUESTIONS.find(x => x.id === step.qid);
+  if (q && currentAnswer !== null) {
+    answers[q.id] = { question: q.text, answer: currentAnswer };
+    saveAnswers();
+  }
+  stepIndex++;
+  runStep();
+}
+
+function startGame() {
+  const title = document.getElementById('title-screen');
+  title.style.opacity = '0';
+  setTimeout(() => { title.style.display = 'none'; }, 1000);
+  stepIndex = 0;
+  runStep();
+}
+
+function runStep() {
+  const step = STEPS[stepIndex];
+  if (!step) return;
+
+  if (step.type === 'scene') {
+    setBg(step.bg);
+    if (step.label) setSceneLabel(step.label);
+    stepIndex++;
+    setTimeout(runStep, 400);
+  } else if (step.type === 'narration') {
+    showDialogue('', step.text, true);
+  } else if (step.type === 'dialogue') {
+    showDialogue(step.speaker, step.text, false);
+  } else if (step.type === 'question') {
+    showQuestion(step.qid);
+  } else if (step.type === 'end') {
+    hideDialogue();
+    hideQuestion();
+    document.querySelectorAll('.bg').forEach(b => b.classList.remove('active'));
+    document.getElementById('bg-end').classList.add('active');
+    sendToSpreadsheet();
+    setTimeout(() => {
+      document.getElementById('end-screen').classList.add('active');
+    }, 800);
+  }
+}
+
+function nextStep() {
+  const step = STEPS[stepIndex];
+  if (!step || step.type === 'question') return;
+  stepIndex++;
+  runStep();
+}
+
+// スプレッドシートに送信
+function sendToSpreadsheet() {
+  const payload = QUESTIONS.map(q => ({
+    question: q.text,
+    answer: answers[q.id] ? answers[q.id].answer : '（未回答）'
+  }));
+  fetch(GAS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(err => console.error('送信エラー:', err));
+}
+
+// Admin
+function openAdmin() {
+  document.getElementById('admin-screen').classList.add('active');
+  document.getElementById('response-list').classList.remove('visible');
+  document.getElementById('pw-wrap').style.display = 'flex';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-err').style.display = 'none';
+}
+
+function closeAdmin() {
+  document.getElementById('admin-screen').classList.remove('active');
+}
+
+function checkPw() {
+  const val = document.getElementById('pw-input').value;
+  if (val === ADMIN_PW) {
+    document.getElementById('pw-wrap').style.display = 'none';
+    showResponses();
+  } else {
+    document.getElementById('pw-err').style.display = 'block';
+  }
+}
+
+function showResponses() {
+  const list = document.getElementById('response-list');
+  list.innerHTML = '';
+  const keys = Object.keys(answers);
+  if (keys.length === 0) {
+    list.innerHTML = '<div class="no-responses">まだ回答がありません</div>';
+  } else {
+    QUESTIONS.forEach(q => {
+      if (answers[q.id]) {
+        const item = document.createElement('div');
+        item.className = 'response-item';
+        item.innerHTML = `
+          <div class="response-q">Q. ${answers[q.id].question}</div>
+          <div class="response-a">${answers[q.id].answer}</div>
+        `;
+        list.appendChild(item);
+      }
+    });
+  }
+  list.classList.add('visible');
+}
+</script>
+
+</body>
+</html>
