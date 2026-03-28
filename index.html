@@ -36,12 +36,21 @@ overflow: hidden;
 }
 
 #game {
-width: 800px;
-height: 560px;
+width: 100vw;
+height: 100vh;
 position: relative;
 overflow: hidden;
+border-radius: 0;
+box-shadow: none;
+}
+
+@media (min-width: 600px) {
+#game {
+width: 800px;
+height: 560px;
 border-radius: 4px;
 box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+}
 }
 
 /* ========== BACKGROUNDS ========== */
@@ -899,6 +908,7 @@ function submitAnswer() {
 function startGame() {
   const title = document.getElementById('title-screen');
   title.style.opacity = '0';
+  title.style.pointerEvents = 'none';
   setTimeout(() => { title.style.display = 'none'; }, 1000);
   stepIndex = 0;
   runStep();
