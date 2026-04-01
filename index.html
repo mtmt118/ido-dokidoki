@@ -197,7 +197,7 @@
     position: absolute;
     bottom: 0; left: 0; right: 0;
     z-index: 20;
-    padding: 0 24px 24px;
+    padding: 0 24px 52px;
     opacity: 0;
     transition: opacity 0.5s ease;
     transform: translateY(0);
@@ -719,7 +719,9 @@ const STEPS = [
   { type: 'narration', text: '〜４月〜　始まりの時……' },
   { type: 'scene', bg: 'lobby', label: '１階ロビー' },
   { type: 'dialogue', speaker: 'まつこ', text: 'ち、遅刻だ〜！' },
-  { type: 'narration', text: '私の名前はまつこ。この春、総務部の経営戦略グループに異動になった。新しい環境でどんなことに挑戦できるのか、ワクワクする気持ちがある一方で、私の心は晴れない。' },
+  { type: 'narration', text: '私の名前はまつこ。
+この春、総務部の経営戦略グループに異動になった。' },
+  { type: 'narration', text: '新しい環境でどんなことに挑戦できるのかワクワクする気持ちがある一方で、私の心は晴れない。' },
   { type: 'narration', text: 'なんでも、経営戦略グループは東海トップクラスの優秀な人材が集う部署らしくて、鈍臭い私がやっていけるのか、ちょっと心配…。' },
   { type: 'narration', text: 'でも、消極的な態度は良くない。同じグループで働くH崎先輩からも「受け身のやつはいらないから」って言われてるし…。' },
   { type: 'dialogue', speaker: 'まつこ', text: 'よ〜し、積極的にコミュニケーション取るぞ！' },
@@ -730,15 +732,19 @@ const STEPS = [
   { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: '……あの、少しでも早くグループの役に立つためにも、グループ長のS脇先輩に聞きたいことがありまして……' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: 'まずは、グループや業務のビジョンを教えてください！' },
   { type: 'question', qid: 'q1' },
+  { type: 'scene', bg: 'office' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'smile', text: '……なるほど、なるほど' },
   { type: 'question', qid: 'q2' },
+  { type: 'scene', bg: 'office' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'worry', text: '……なかなか大変ですね' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: '次は、S脇先輩の仕事の価値観を教えてください！' },
   { type: 'question', qid: 'q3' },
   { type: 'question', qid: 'q4' },
+  { type: 'scene', bg: 'office' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'smile', text: '……ふむふむ、業務にあたる際の参考にします！' },
   { type: 'question', qid: 'q5' },
   { type: 'question', qid: 'q6' },
+  { type: 'scene', bg: 'office' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'genki', text: 'なるほど、頑張ります！' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: '次は、S脇先輩のコミュニケーションスタイルについて教えてください' },
   { type: 'question', qid: 'q7' },
@@ -746,6 +752,7 @@ const STEPS = [
   { type: 'question', qid: 'q9' },
   { type: 'question', qid: 'q10' },
   { type: 'question', qid: 'q11' },
+  { type: 'scene', bg: 'office' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'worry', text: '……そうなんですね、気をつけます！' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'smile', text: '……S脇先輩、色々教えていただきありがとうございます。とても参考になりました！' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'genki', text: '少しでも早くグループの役に立てるよう頑張ります！これからよろしくお願いします！' },
@@ -808,6 +815,7 @@ function showDialogue(speaker, text, isNarration, sprite) {
     }
   }
 
+  textEl.style.whiteSpace = "pre-wrap";
   textEl.textContent = text;
   area.classList.add('visible');
 }
@@ -893,6 +901,8 @@ function hideQuestion() {
 function submitAnswer() {
   const step = STEPS[stepIndex];
   if (step.type !== 'question') return;
+  // キーボードを閉じる
+  if (document.activeElement) document.activeElement.blur();
   const q = QUESTIONS.find(x => x.id === step.qid);
   if (q && currentAnswer !== null) {
     answers[q.id] = { question: q.text, answer: currentAnswer };
