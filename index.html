@@ -77,43 +77,15 @@
   }
 
   #bg-sky {
-    background: linear-gradient(180deg, #a8d8f0 0%, #d4ecf8 50%, #f0f8e8 100%);
-  }
-  #bg-sky::after {
-    content: '☁ ☁  ☁';
-    position: absolute;
-    top: 80px;
-    left: 60px;
-    font-size: 28px;
-    color: rgba(255,255,255,0.9);
-    letter-spacing: 20px;
-    animation: clouds 20s linear infinite;
-  }
-  @keyframes clouds {
-    from { transform: translateX(0); }
-    to { transform: translateX(60px); }
+    background: url('bg-sky.jpg') center center / cover no-repeat;
   }
 
   #bg-lobby {
-    background: linear-gradient(180deg, #e8e0d8 0%, #d4c8b8 60%, #c0b4a4 100%);
-  }
-  #bg-lobby::before {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 200px;
-    background: linear-gradient(180deg, transparent, rgba(180,160,140,0.4));
+    background: url('bg-lobby.jpg') center center / cover no-repeat;
   }
 
   #bg-office {
-    background: linear-gradient(180deg, #e0e8d8 0%, #c8d4c0 60%, #b8c4b0 100%);
-  }
-  #bg-office::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 120px;
-    background: linear-gradient(180deg, rgba(200,212,192,0.8), transparent);
+    background: url('bg-office.jpg') center center / cover no-repeat;
   }
 
   #bg-question {
@@ -613,6 +585,22 @@
     padding: 40px 0;
   }
 
+  /* ========== CHARACTER SPRITE ========== */
+  #character {
+    position: absolute;
+    bottom: 140px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 65%;
+    max-height: 480px;
+    z-index: 15;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    object-fit: contain;
+  }
+  #character.visible { opacity: 1; }
+
   /* ========== FADE OVERLAY ========== */
   #fade {
     position: absolute;
@@ -640,6 +628,9 @@
 
   <!-- Scene label -->
   <div class="scene-label" id="scene-label"></div>
+
+  <!-- Character Sprite -->
+  <img id="character" src="" alt="まつこ">
 
   <!-- Fade overlay -->
   <div id="fade"></div>
@@ -733,30 +724,30 @@ const STEPS = [
   { type: 'dialogue', speaker: 'まつこ', text: 'よ〜し、積極的にコミュニケーション取るぞ！' },
   { type: 'narration', text: '私は9階の事務所まで階段を駆け抜けた。' },
   { type: 'scene', bg: 'office', label: '事務所' },
-  { type: 'dialogue', speaker: 'まつこ', text: 'あ、あの初めまして。本日から異動になったまつこです。' },
-  { type: 'dialogue', speaker: 'まつこ', text: 'ご迷惑をおかけすることも多いと思うんですけど、精一杯頑張りますので、ご鞭撻のほどよろしくお願いします！' },
-  { type: 'dialogue', speaker: 'まつこ', text: '……あの、少しでも早くグループの役に立つためにも、グループ長のS脇先輩に聞きたいことがありまして……' },
-  { type: 'dialogue', speaker: 'まつこ', text: 'まずは、グループや業務のビジョンを教えてください！' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: 'あ、あの初めまして。本日から異動になったまつこです。' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: 'ご迷惑をおかけすることも多いと思うんですけど、精一杯頑張りますので、ご鞭撻のほどよろしくお願いします！' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: '……あの、少しでも早くグループの役に立つためにも、グループ長のS脇先輩に聞きたいことがありまして……' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: 'まずは、グループや業務のビジョンを教えてください！' },
   { type: 'question', qid: 'q1' },
-  { type: 'dialogue', speaker: 'まつこ', text: '……なるほど、なるほど' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'smile', text: '……なるほど、なるほど' },
   { type: 'question', qid: 'q2' },
-  { type: 'dialogue', speaker: 'まつこ', text: '……なかなか大変ですね' },
-  { type: 'dialogue', speaker: 'まつこ', text: '次は、S脇先輩の仕事の価値観を教えてください！' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'worry', text: '……なかなか大変ですね' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: '次は、S脇先輩の仕事の価値観を教えてください！' },
   { type: 'question', qid: 'q3' },
   { type: 'question', qid: 'q4' },
-  { type: 'dialogue', speaker: 'まつこ', text: '……ふむふむ、業務にあたる際の参考にします！' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'smile', text: '……ふむふむ、業務にあたる際の参考にします！' },
   { type: 'question', qid: 'q5' },
   { type: 'question', qid: 'q6' },
-  { type: 'dialogue', speaker: 'まつこ', text: 'なるほど、頑張ります！' },
-  { type: 'dialogue', speaker: 'まつこ', text: '次は、S脇先輩のコミュニケーションスタイルについて教えてください' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'genki', text: 'なるほど、頑張ります！' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: '次は、S脇先輩のコミュニケーションスタイルについて教えてください' },
   { type: 'question', qid: 'q7' },
   { type: 'question', qid: 'q8' },
   { type: 'question', qid: 'q9' },
   { type: 'question', qid: 'q10' },
   { type: 'question', qid: 'q11' },
-  { type: 'dialogue', speaker: 'まつこ', text: '……そうなんですね、気をつけます！' },
-  { type: 'dialogue', speaker: 'まつこ', text: '……S脇先輩、色々教えていただきありがとうございます。とても参考になりました！' },
-  { type: 'dialogue', speaker: 'まつこ', text: '少しでも早くグループの役に立てるよう頑張ります！これからよろしくお願いします！' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'worry', text: '……そうなんですね、気をつけます！' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'smile', text: '……S脇先輩、色々教えていただきありがとうございます。とても参考になりました！' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'genki', text: '少しでも早くグループの役に立てるよう頑張ります！これからよろしくお願いします！' },
   { type: 'end' }
 ];
 
@@ -791,21 +782,29 @@ function setSceneLabel(text) {
   setTimeout(() => el.classList.remove('visible'), 3000);
 }
 
-function showDialogue(speaker, text, isNarration) {
+function showDialogue(speaker, text, isNarration, sprite) {
   const area = document.getElementById('dialogue-area');
   const nameEl = document.getElementById('speaker-name');
   const box = document.getElementById('dialogue-box');
   const textEl = document.getElementById('dialogue-text');
+  const charEl = document.getElementById('character');
 
   hideQuestion();
 
   if (isNarration) {
     nameEl.style.display = 'none';
     box.classList.add('narration');
+    charEl.classList.remove('visible');
   } else {
     nameEl.style.display = 'inline-block';
     nameEl.textContent = speaker;
     box.classList.remove('narration');
+    if (sprite) {
+      charEl.src = 'matuko-' + sprite + '.png';
+      charEl.classList.add('visible');
+    } else {
+      charEl.classList.remove('visible');
+    }
   }
 
   textEl.textContent = text;
@@ -922,12 +921,13 @@ function runStep() {
   } else if (step.type === 'narration') {
     showDialogue('', step.text, true);
   } else if (step.type === 'dialogue') {
-    showDialogue(step.speaker, step.text, false);
+    showDialogue(step.speaker, step.text, false, step.sprite);
   } else if (step.type === 'question') {
     showQuestion(step.qid);
   } else if (step.type === 'end') {
     hideDialogue();
     hideQuestion();
+    document.getElementById('character').classList.remove('visible');
     document.querySelectorAll('.bg').forEach(b => b.classList.remove('active'));
     document.getElementById('bg-end').classList.add('active');
     sendToSpreadsheet();
