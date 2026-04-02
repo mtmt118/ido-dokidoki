@@ -966,6 +966,22 @@ function nextStep() {
   runStep();
 }
 
+// ゲーム画面クリックで進む
+document.getElementById('game').addEventListener('click', function(e) {
+  // ボタンやリンクのクリックは除外
+  if (e.target.closest('button, a, input, textarea, #question-screen, #title-screen, #admin-screen, #end-screen')) return;
+  nextStep();
+});
+
+// Enterキーで進む
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    const step = STEPS[stepIndex];
+    if (!step || step.type === 'question') return;
+    nextStep();
+  }
+});
+
 // スプレッドシートに送信
 function sendToSpreadsheet() {
   const payload = QUESTIONS.map(q => ({
