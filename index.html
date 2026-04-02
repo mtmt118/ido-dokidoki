@@ -976,6 +976,12 @@ document.getElementById('game').addEventListener('click', function(e) {
 // Enterキーで進む
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Enter') {
+    // タイトル画面が表示中ならゲーム開始
+    const title = document.getElementById('title-screen');
+    if (title && title.style.display !== 'none' && title.classList.contains('active')) {
+      startGame();
+      return;
+    }
     const step = STEPS[stepIndex];
     if (!step || step.type === 'question') return;
     nextStep();
