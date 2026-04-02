@@ -900,7 +900,17 @@ function hideQuestion() {
 function submitAnswer() {
   const step = STEPS[stepIndex];
   if (step.type !== 'question') return;
-  // キーボードを閉じてズームリセット
+  // iOSキーボードを強制的に閉じる
+  const tmp = document.createElement('input');
+  tmp.setAttribute('type', 'text');
+  tmp.style.position = 'fixed';
+  tmp.style.opacity = '0';
+  tmp.style.top = '0';
+  tmp.style.left = '0';
+  document.body.appendChild(tmp);
+  tmp.focus();
+  tmp.blur();
+  document.body.removeChild(tmp);
   if (document.activeElement) document.activeElement.blur();
   window.scrollTo(0, 0);
   const q = QUESTIONS.find(x => x.id === step.qid);
