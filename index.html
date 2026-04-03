@@ -222,7 +222,7 @@
     backdrop-filter: blur(12px);
     border-radius: 0 8px 8px 8px;
     padding: 20px 24px 16px;
-    height: 130px;
+    height: 160px;
     cursor: pointer;
     position: relative;
     box-shadow: 0 -4px 24px rgba(0,0,0,0.15);
@@ -639,8 +639,7 @@
   <!-- Title Screen -->
   <div id="title-screen" class="active">
     <div class="title-deco"></div>
-    <div class="title-main">異動ドキドキメモリアル</div>
-    <div class="title-sub">IDO DOKIDOKI</div>
+    <img src="title-logo.png" alt="異動ドキドキメモリアル" style="width:80%;max-width:320px;margin-bottom:40px;">
     <button class="start-btn" onclick="startGame()">は じ め る</button>
     <span class="admin-link" onclick="openAdmin()">管理者ページ</span>
   </div>
@@ -701,13 +700,13 @@ const QUESTIONS = [
   { id: 'q6', text: 'このグループで評価される行動は何ですか？また、NGな行動は何ですか？', type: 'free' },
   { id: 'q7', text: '報連相のタイミングはいつが好ましいですか？', type: 'select', options: ['急ぎじゃなければ一日の最後にまとめて', '都度聞いてくれてOK', 'そもそも極力コミュニケーションを取りたくない'] },
   { id: 'q8', text: '仕事ではどのような形でのコミュニケーションを望みますか？', type: 'select', options: ['チャット', '口頭'] },
-  { id: 'q9', text: 'どちらの流れで報連相されるのが望ましいですか？', type: 'select', options: ['背景→結論', '結論→背景'] },
+  { id: 'q9', text: 'どのような流れで話したら良いですか？', type: 'select', options: ['背景→結論', '結論→背景'] },
   { id: 'q10', text: '仕事ではどんな風に話されるのが好ましいですか？', type: 'likert', left: '事実ベースで簡潔に', right: '愛想良く感情を交えて' },
   { id: 'q11', text: '最も好ましくない人物像はどれですか？', type: 'select', options: [
     '性格に問題はないが、とにかく要領が悪くて仕事の進みが遅い',
-    '話の筋は通っているが、口ばかりで行動しない',
-    '意欲があるのは分かるが、結局何を言いたいのか分からず、ダラダラ話されて時間ばかり食う',
-    '仕事は完璧にこなしてくれるが、プライドが高く扱いづらい',
+    '話の筋は通っているが、自分は口ばかりで行動しない',
+    '意欲があるのは分かるが、結局何を言いたいのか分からない、ダラダラ話されて時間ばかり食う',
+    '仕事は最低限こなしてくれるが、いかんせんプライドが高く扱いづらい',
     '一生懸命だが、感情の起伏が激しい',
     '要領良く業務を進めてくれるが、ミスがあると責任転嫁しがち'
   ]}
@@ -721,9 +720,9 @@ const STEPS = [
   { type: 'dialogue', speaker: 'まつこ', text: 'ち、遅刻だ〜！' },
   { type: 'narration', text: '私の名前はまつこ。\nこの春、総務部の経営戦略グループに異動になった。' },
   { type: 'narration', text: '新しい環境でどんなことに挑戦できるのかワクワクする気持ちがある一方で、私の心は晴れない。' },
-  { type: 'narration', text: 'なんでも、このグループは東海トップクラスの優秀な人材が集っているらしくて、鈍臭い私がやっていけるのか、ちょっと心配…。' },
-  { type: 'narration', text: 'でも、消極的な態度は良くない。同じグループで働くことになったH崎先輩からも「受け身のやつはいらないから」って言われてるし…。' },
-  { type: 'dialogue', speaker: 'まつこ', text: 'よし、まずは積極的にコミュニケーションを取ろう！' },
+  { type: 'narration', text: 'なんでも、経営戦略グループは東海トップクラスの優秀な人材が集う部署らしくて、鈍臭い私がやっていけるのか、ちょっと心配…。' },
+  { type: 'narration', text: 'でも、消極的な態度は良くない。同じグループで働くH崎先輩からも「受け身のやつはいらないから」って言われてるし…。' },
+  { type: 'dialogue', speaker: 'まつこ', text: 'よ〜し、積極的にコミュニケーション取るぞ！' },
   { type: 'narration', text: '私は9階の事務所まで階段を駆け抜けた。' },
   { type: 'scene', bg: 'office', label: '事務所' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: 'あ、あの初めまして。本日から異動になったまつこです。' },
