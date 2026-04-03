@@ -726,7 +726,7 @@ const STEPS = [
   { type: 'narration', text: '私は9階の事務所まで階段を駆け抜けた。' },
   { type: 'scene', bg: 'office', label: '事務所' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: 'あ、あの初めまして。本日から異動になったまつこです。' },
-  { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: 'ご迷惑をおかけすることも多いと思うんですけど、精一杯頑張りますので、ご鞭撻のほどよろしくお願いします！' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: 'ご迷惑をおかけすることも多いかと思いますが、精一杯頑張りますので、ご鞭撻のほどよろしくお願いします！' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: '……あの、少しでも早くグループの役に立つためにも、グループ長のS脇先輩に聞きたいことがありまして……' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: 'まずは、グループや業務のビジョンを教えてください！' },
   { type: 'question', qid: 'q1' },
@@ -939,10 +939,16 @@ function runStep() {
  
   if (step.type === 'scene') {
     setBg(step.bg);
-    if (step.label) setSceneLabel(step.label);
-    stepIndex++;
-    // ラベルがある場合は少し待ってから進む、ない場合はすぐ進む
-    setTimeout(runStep, step.label ? 800 : 0);
+    if (step.label) {
+      setSceneLabel(step.label);
+      // クリック待ち：ダイアログを非表示にしてクリックで次へ
+      hideDialogue();
+      document.getElementById('character').classList.remove('visible');
+      stepIndex++;
+    } else {
+      stepIndex++;
+      runStep();
+    }
   } else if (step.type === 'narration') {
     showDialogue('', step.text, true);
   } else if (step.type === 'dialogue') {
