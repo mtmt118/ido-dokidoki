@@ -639,7 +639,7 @@
   <!-- Title Screen -->
   <div id="title-screen" class="active">
     <div class="title-deco"></div>
-    <img src="title-logo.png" alt="異動ドキドキメモリアル" style="width:80%;max-width:320px;margin-bottom:40px;mix-blend-mode:multiply;">
+    <img src="title-logo.png" alt="異動ドキドキメモリアル" style="width:80%;max-width:320px;margin-bottom:40px;mix-blend-mode:screen;">
     <button class="start-btn" onclick="startGame()">は じ め る</button>
     <span class="admin-link" onclick="openAdmin()">管理者ページ</span>
   </div>
@@ -693,20 +693,20 @@ const GAS_URL = 'https://script.google.com/macros/s/AKfycbywLD5JXoZylT90ilvsd848
  
 const QUESTIONS = [
   { id: 'q1', text: 'このグループが目指している成果・理想的な状態を教えてください。', type: 'free' },
-  { id: 'q2', text: 'このグループが抱えている課題を教えてください。どんな解決方法を考えているかも教えてください。', type: 'free' },
+  { id: 'q2', text: 'このグループが抱えている課題と解決策を教えてください。', type: 'free' },
   { id: 'q3', text: 'スピード重視か、丁寧さ重視か', type: 'likert', left: 'スピード重視', right: '丁寧さ重視' },
   { id: 'q4', text: '革新重視か、堅実重視か', type: 'likert', left: '革新重視', right: '堅実重視' },
   { id: 'q5', text: '新しいメンバーに期待することは何ですか？', type: 'free' },
   { id: 'q6', text: 'このグループで評価される行動は何ですか？また、NGな行動は何ですか？', type: 'free' },
   { id: 'q7', text: '報連相のタイミングはいつが好ましいですか？', type: 'select', options: ['急ぎじゃなければ一日の最後にまとめて', '都度聞いてくれてOK', 'そもそも極力コミュニケーションを取りたくない'] },
-  { id: 'q8', text: '仕事ではどのような形でのコミュニケーションを望みますか？', type: 'select', options: ['チャット', '口頭'] },
-  { id: 'q9', text: 'どのような流れで話したら良いですか？', type: 'select', options: ['背景→結論', '結論→背景'] },
-  { id: 'q10', text: '仕事ではどんな風に話されるのが好ましいですか？', type: 'likert', left: '事実ベースで簡潔に', right: '愛想良く感情を交えて' },
+  { id: 'q8', text: '仕事では主にどちらでのコミュニケーションを望みますか？', type: 'select', options: ['チャット', '口頭'] },
+  { id: 'q9', text: '報連相はどちらの流れで話されるのが望ましいですか？', type: 'select', options: ['背景→結論', '結論→背景'] },
+  { id: 'q10', text: '仕事ではどのように話されるのが好ましいですか？', type: 'likert', left: '事実ベースで簡潔に', right: '愛想良く感情を交えて' },
   { id: 'q11', text: '最も好ましくない人物像はどれですか？', type: 'select', options: [
     '性格に問題はないが、とにかく要領が悪くて仕事の進みが遅い',
-    '話の筋は通っているが、自分は口ばかりで行動しない',
-    '意欲があるのは分かるが、結局何を言いたいのか分からない、ダラダラ話されて時間ばかり食う',
-    '仕事は最低限こなしてくれるが、いかんせんプライドが高く扱いづらい',
+    '話の筋は通っているが、口ばかりで行動しない',
+    '意欲はあるものの、話が要領を得ず、時間ばかり食う',
+    '仕事は最低限完璧にこなしてくれるが、プライドが高く扱いづらい',
     '一生懸命だが、感情の起伏が激しい',
     '要領良く業務を進めてくれるが、ミスがあると責任転嫁しがち'
   ]}
@@ -925,9 +925,10 @@ function startGame() {
   const title = document.getElementById('title-screen');
   title.style.opacity = '0';
   title.style.pointerEvents = 'none';
-  const logo = title.querySelector('img');
-  if (logo) logo.style.display = 'none';
-  setTimeout(() => { title.style.display = 'none'; }, 1000);
+  title.classList.remove('active');
+  setTimeout(() => {
+    title.style.display = 'none';
+  }, 1000);
   stepIndex = 0;
   runStep();
 }
@@ -1051,4 +1052,3 @@ function showResponses() {
 </script>
 </body>
 </html>
- 
