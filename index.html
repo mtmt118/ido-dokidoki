@@ -939,16 +939,13 @@ function runStep() {
  
   if (step.type === 'scene') {
     setBg(step.bg);
+    hideDialogue();
+    document.getElementById('character').classList.remove('visible');
     if (step.label) {
       setSceneLabel(step.label);
-      // クリック待ち：ダイアログを非表示にしてクリックで次へ
-      hideDialogue();
-      document.getElementById('character').classList.remove('visible');
-      stepIndex++;
-    } else {
-      stepIndex++;
-      runStep();
     }
+    stepIndex++;
+    setTimeout(runStep, 800);
   } else if (step.type === 'narration') {
     showDialogue('', step.text, true);
   } else if (step.type === 'dialogue') {
@@ -1058,3 +1055,4 @@ function showResponses() {
 </script>
 </body>
 </html>
+ 
