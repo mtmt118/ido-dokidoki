@@ -639,7 +639,7 @@
   <!-- Title Screen -->
   <div id="title-screen" class="active">
     <div class="title-deco"></div>
-    <img src="title-logo.png" alt="異動ドキドキメモリアル" style="width:80%;max-width:320px;margin-bottom:40px;">
+    <img src="title-logo.png" alt="異動ドキドキメモリアル" style="width:80%;max-width:320px;margin-bottom:40px;mix-blend-mode:multiply;">
     <button class="start-btn" onclick="startGame()">は じ め る</button>
     <span class="admin-link" onclick="openAdmin()">管理者ページ</span>
   </div>
@@ -925,6 +925,8 @@ function startGame() {
   const title = document.getElementById('title-screen');
   title.style.opacity = '0';
   title.style.pointerEvents = 'none';
+  const logo = title.querySelector('img');
+  if (logo) logo.style.display = 'none';
   setTimeout(() => { title.style.display = 'none'; }, 1000);
   stepIndex = 0;
   runStep();
