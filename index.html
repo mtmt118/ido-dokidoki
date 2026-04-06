@@ -918,26 +918,16 @@ function submitAnswer() {
 }
  
 function startGame() {
-  const title = document.getElementById('title-screen');
-  const bgTitle = document.getElementById('bg-title');
-  // ボタンと管理者リンクを即座に非表示
-  const btn = document.querySelector('.start-btn');
-  const adminLink = document.querySelector('.admin-link');
-  if (btn) btn.style.display = 'none';
-  if (adminLink) adminLink.style.display = 'none';
-  // タイトル画面と背景をフェードアウト
-  title.style.opacity = '0';
-  title.style.pointerEvents = 'none';
-  bgTitle.style.opacity = '0';
-  bgTitle.style.pointerEvents = 'none';
+  // タイトル関連を全て強制非表示
+  ['title-screen', 'bg-title'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.cssText = 'display:none !important; opacity:0 !important; pointer-events:none !important;';
+      el.classList.remove('active');
+    }
+  });
   stepIndex = 0;
-  setTimeout(() => {
-    title.style.display = 'none';
-    title.classList.remove('active');
-    bgTitle.classList.remove('active');
-    bgTitle.style.display = 'none';
-    runStep();
-  }, 800);
+  setTimeout(runStep, 100);
 }
  
 function runStep() {
@@ -951,7 +941,8 @@ function runStep() {
     stepIndex++;
     if (step.label) {
       setSceneLabel(step.label);
-      setTimeout(runStep, 1000);
+      // ラベルありは自動で次のステップへ（クリック不要）
+      setTimeout(runStep, 1200);
     } else {
       setTimeout(runStep, 0);
     }
