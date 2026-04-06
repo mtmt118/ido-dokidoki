@@ -924,15 +924,12 @@ function submitAnswer() {
 }
  
 function startGame() {
+  // タイトル画面を完全に隠す
   const title = document.getElementById('title-screen');
-  title.style.opacity = '0';
-  title.style.pointerEvents = 'none';
+  title.style.display = 'none';
   title.classList.remove('active');
-  // タイトル背景も非表示に
+  // タイトル背景を隠す
   document.getElementById('bg-title').classList.remove('active');
-  setTimeout(() => {
-    title.style.display = 'none';
-  }, 1000);
   stepIndex = 0;
   runStep();
 }
@@ -947,9 +944,13 @@ function runStep() {
     document.getElementById('character').classList.remove('visible');
     if (step.label) {
       setSceneLabel(step.label);
+      // ラベルありのシーンはクリック待ち
+      stepIndex++;
+    } else {
+      // ラベルなしのシーンは自動で次へ
+      stepIndex++;
+      setTimeout(runStep, 0);
     }
-    stepIndex++;
-    setTimeout(runStep, 800);
   } else if (step.type === 'narration') {
     showDialogue('', step.text, true);
   } else if (step.type === 'dialogue') {
