@@ -926,7 +926,14 @@ function submitAnswer() {
   }
   stepIndex++;
   hideQuestion();
-  skipToFirst();
+  // 次がquestionなら自動表示、sceneやdialogueならskipToFirst
+  const next = STEPS[stepIndex];
+  if (next && next.type === 'question') {
+    showQuestion(next.qid);
+    stepIndex++;
+  } else {
+    skipToFirst();
+  }
 }
  
 function startGame() {
