@@ -928,6 +928,8 @@ function startGame() {
   title.style.opacity = '0';
   title.style.pointerEvents = 'none';
   title.classList.remove('active');
+  // タイトル背景も非表示に
+  document.getElementById('bg-title').classList.remove('active');
   setTimeout(() => {
     title.style.display = 'none';
   }, 1000);
