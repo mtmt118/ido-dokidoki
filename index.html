@@ -914,7 +914,8 @@ function submitAnswer() {
   }
   stepIndex++;
   hideQuestion();
-  runStep();
+  // 質問後は自動で次のステップへ（sceneをスキップしてセリフを自動表示）
+  autoRunUntilDialogue();
 }
  
 function startGame() {
@@ -927,7 +928,7 @@ function startGame() {
     }
   });
   stepIndex = 0;
-  setTimeout(runStep, 100);
+  autoRunUntilDialogue();
 }
  
 function runStep() {
@@ -938,14 +939,12 @@ function runStep() {
     setBg(step.bg);
     hideDialogue();
     document.getElementById('character').classList.remove('visible');
-    stepIndex++;
     if (step.label) {
       setSceneLabel(step.label);
-      // ラベルありは自動で次のステップへ（クリック不要）
-      setTimeout(runStep, 1200);
-    } else {
-      setTimeout(runStep, 0);
     }
+    stepIndex++;
+    // 場面切り替え後は次のdialogue/narrationを自動表示
+    autoRunUntilDialogue();
   } else if (step.type === 'narration') {
     showDialogue('', step.text, true);
   } else if (step.type === 'dialogue') {
@@ -964,6 +963,26 @@ function runStep() {
     setTimeout(() => {
       document.getElementById('end-screen').classList.add('active');
     }, 800);
+  }
+}
+ 
+// sceneを飛ばして最初のdialogue/narrationを自動表示
+function autoRunUntilDialogue() {
+  const step = STEPS[stepIndex];
+  if (!step) return;
+  if (step.type === 'scene') {
+    // sceneは飛ばして背景だけ切り替える
+    setBg(step.bg);
+    hideDialogue();
+    document.getElementById('character').classList.remove('visible');
+    if (step.label) setSceneLabel(step.label);
+    stepIndex++;
+    autoRunUntilDialogue();
+  } else if (step.type === 'dialogue' || step.type === 'narration') {
+    // 最初のセリフ/地の文を自動表示（ここで止まる）
+    runStep();
+  } else {
+    runStep();
   }
 }
  
