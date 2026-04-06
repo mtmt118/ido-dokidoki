@@ -729,9 +729,9 @@ const STEPS = [
   { type: 'narration', text: '私は9階の事務所まで階段を駆け抜けた。' },
   { type: 'scene', bg: 'office', label: '事務所' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: 'は、初めまして。本日から異動になったまつこです。' },
-  { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: 'ご迷惑をおかけすることも多いかと思いますが、精一杯頑張りますので、ご鞭撻のほどよろしくお願いします！' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'smile', text: 'ご迷惑をおかけすることも多いかと思いますが、精一杯頑張りますので、ご鞭撻のほどよろしくお願いします！' },
   { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: '……あの、少しでも早く役に立つためにも、グループ長のS脇先輩に聞きたいことがありまして……。' },
-  { type: 'dialogue', speaker: 'まつこ', sprite: 'normal', text: 'まずは、このグループについていくつか質問させてください！' },
+  { type: 'dialogue', speaker: 'まつこ', sprite: 'genki', text: 'まずは、このグループについていくつか質問させてください！' },
   { type: 'question', qid: 'q1' },
   { type: 'question', qid: 'q2' },
   { type: 'question', qid: 'q3' },
@@ -918,7 +918,7 @@ function submitAnswer() {
   }
   stepIndex++;
   hideQuestion();
-  // 次がquestionなら即自動表示、それ以外はskipToFirst
+  // 次がquestionなら即自動表示（stepIndexはそのまま）、それ以外はskipToFirst
   const next = STEPS[stepIndex];
   if (next && next.type === 'question') {
     showQuestion(next.qid);
@@ -962,7 +962,7 @@ function runStep() {
     showDialogue('', step.text, true);
   } else if (step.type === 'dialogue') {
     showDialogue(step.speaker, step.text, false, step.sprite);
-  } else if (step.type === 'question') {
+  } else if (step.type === 'question' || step.type === 'autoQuestion') {
     hideDialogue();
     document.getElementById('character').classList.remove('visible');
   } else if (step.type === 'end') {
@@ -981,14 +981,18 @@ function runStep() {
 function nextStep() {
   const step = STEPS[stepIndex];
   if (!step) return;
+  // 現在がquestionなら質問を表示（まだ表示していない場合）
   if (step.type === 'question') {
     showQuestion(step.qid);
     return;
   }
   stepIndex++;
-  // 次がsceneならスキップして最初のdialogue/narrationを表示
   const next = STEPS[stepIndex];
-  if (next && next.type === 'scene') {
+  if (!next) return;
+  if (next.type === 'question') {
+    // dialogueの次がquestionなら自動表示（stepIndexはそのまま）
+    showQuestion(next.qid);
+  } else if (next.type === 'scene') {
     skipToFirst();
   } else {
     runStep();
@@ -1084,3 +1088,4 @@ function showResponses() {
 </script>
 </body>
 </html>
+ 
