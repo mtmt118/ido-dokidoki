@@ -926,11 +926,10 @@ function submitAnswer() {
   }
   stepIndex++;
   hideQuestion();
-  // 次がquestionなら自動表示、sceneやdialogueならskipToFirst
+  // 次がquestionなら即自動表示、それ以外はskipToFirst
   const next = STEPS[stepIndex];
   if (next && next.type === 'question') {
     showQuestion(next.qid);
-    stepIndex++;
   } else {
     skipToFirst();
   }
