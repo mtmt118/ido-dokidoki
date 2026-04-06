@@ -161,10 +161,6 @@
   }
  
   .admin-link {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 10px;
     color: rgba(255,255,255,0.3);
@@ -924,7 +920,12 @@ function submitAnswer() {
 function startGame() {
   const title = document.getElementById('title-screen');
   const bgTitle = document.getElementById('bg-title');
-  // タイトル要素を全て非表示
+  // ボタンと管理者リンクを即座に非表示
+  const btn = document.querySelector('.start-btn');
+  const adminLink = document.querySelector('.admin-link');
+  if (btn) btn.style.display = 'none';
+  if (adminLink) adminLink.style.display = 'none';
+  // タイトル画面と背景をフェードアウト
   title.style.opacity = '0';
   title.style.pointerEvents = 'none';
   bgTitle.style.opacity = '0';
