@@ -914,8 +914,7 @@ function submitAnswer() {
   }
   stepIndex++;
   hideQuestion();
-  // 質問後は自動で次のステップへ（sceneをスキップしてセリフを自動表示）
-  autoRunUntilDialogue();
+  runStep(); // sceneを自動スキップしてセリフを表示
 }
  
 function startGame() {
@@ -931,28 +930,27 @@ function startGame() {
   autoRunUntilDialogue();
 }
  
+// stepIndexを進めて表示する（scene連続の場合は自動でスキップし最初のdialogue/narrationを表示）
 function runStep() {
   const step = STEPS[stepIndex];
   if (!step) return;
  
   if (step.type === 'scene') {
+    // sceneは背景切り替えだけして即次へ
     setBg(step.bg);
     hideDialogue();
     document.getElementById('character').classList.remove('visible');
-    if (step.label) {
-      setSceneLabel(step.label);
-    }
+    if (step.label) setSceneLabel(step.label);
     stepIndex++;
-    // 場面切り替え後は次のdialogue/narrationを自動表示
-    autoRunUntilDialogue();
+    runStep(); // 次のステップを即実行
   } else if (step.type === 'narration') {
-    showDialogue('', step.text, true);
+    showDialogue('', step.text, true); // クリック待ちで止まる
   } else if (step.type === 'dialogue') {
-    showDialogue(step.speaker, step.text, false, step.sprite);
+    showDialogue(step.speaker, step.text, false, step.sprite); // クリック待ちで止まる
   } else if (step.type === 'question') {
-    // クリック待ち - nextStep()から呼ばれる
     hideDialogue();
     document.getElementById('character').classList.remove('visible');
+    // クリック待ち（nextStepから呼ばれる）
   } else if (step.type === 'end') {
     hideDialogue();
     hideQuestion();
@@ -966,31 +964,11 @@ function runStep() {
   }
 }
  
-// sceneを飛ばして最初のdialogue/narrationを自動表示
-function autoRunUntilDialogue() {
-  const step = STEPS[stepIndex];
-  if (!step) return;
-  if (step.type === 'scene') {
-    // sceneは飛ばして背景だけ切り替える
-    setBg(step.bg);
-    hideDialogue();
-    document.getElementById('character').classList.remove('visible');
-    if (step.label) setSceneLabel(step.label);
-    stepIndex++;
-    autoRunUntilDialogue();
-  } else if (step.type === 'dialogue' || step.type === 'narration') {
-    // 最初のセリフ/地の文を自動表示（ここで止まる）
-    runStep();
-  } else {
-    runStep();
-  }
-}
- 
 function nextStep() {
   const step = STEPS[stepIndex];
   if (!step) return;
-  // questionタイプはクリックで質問画面へ移動
   if (step.type === 'question') {
+    // questionはクリックで質問画面へ
     showQuestion(step.qid);
     return;
   }
