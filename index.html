@@ -6,7 +6,7 @@
 <title>異動ドキドキメモリアル</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap');
- 
+
   :root {
     --cream: #faf6f0;
     --warm-white: #fffdf9;
@@ -21,9 +21,9 @@
     --office: #c8d4c0;
     --shadow: rgba(42,33,24,0.15);
   }
- 
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
- 
+
   body {
     font-family: 'Noto Serif JP', serif;
     background: var(--text-dark);
@@ -33,7 +33,7 @@
     min-height: 100vh;
     overflow: hidden;
   }
- 
+
   #game {
     width: 100vw;
     height: 100vh;
@@ -42,7 +42,7 @@
     border-radius: 0;
     box-shadow: none;
   }
- 
+
   /* PC：スマホ縦型を中央に表示 */
   @media (min-width: 600px) {
     body {
@@ -56,7 +56,7 @@
       box-shadow: 0 40px 80px rgba(0,0,0,0.7);
     }
   }
- 
+
   /* ========== BACKGROUNDS ========== */
   .bg {
     position: absolute;
@@ -65,23 +65,23 @@
     opacity: 0;
   }
   .bg.active { opacity: 1; }
- 
+
   #bg-title {
     background: url('bg-title.jpg') center center / cover no-repeat;
   }
- 
+
   #bg-sky {
     background: url('bg-sky.jpg') center center / cover no-repeat;
   }
- 
+
   #bg-lobby {
     background: url('bg-lobby.jpg') center center / cover no-repeat;
   }
- 
+
   #bg-office {
     background: url('bg-office.jpg') center center / cover no-repeat;
   }
- 
+
   #bg-question {
     background: linear-gradient(135deg, #2a2118 0%, #3a3128 50%, #2a2118 100%);
   }
@@ -91,11 +91,11 @@
     inset: 0;
     background: radial-gradient(ellipse at 50% 30%, rgba(200,112,90,0.15) 0%, transparent 60%);
   }
- 
+
   #bg-end {
     background: url('bg-end.jpg') center center / cover no-repeat;
   }
- 
+
   /* ========== TITLE SCREEN ========== */
   #title-screen {
     position: absolute;
@@ -110,14 +110,15 @@
     transition: opacity 1s ease;
   }
   #title-screen.active { opacity: 1; }
- 
+  #title-screen.hidden { display: none !important; opacity: 0 !important; pointer-events: none !important; }
+
   .title-deco {
     width: 60px;
     height: 2px;
     background: rgba(255,255,255,0.6);
     margin-bottom: 24px;
   }
- 
+
   .title-main {
     font-size: 52px;
     font-weight: 700;
@@ -126,7 +127,7 @@
     letter-spacing: 8px;
     margin-bottom: 8px;
   }
- 
+
   .title-sub {
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 13px;
@@ -135,7 +136,7 @@
     letter-spacing: 6px;
     margin-bottom: 48px;
   }
- 
+
   .start-btn {
     position: absolute;
     top: 68%;
@@ -161,7 +162,7 @@
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(219,87,138,0.5);
   }
- 
+
   .admin-link {
     position: absolute;
     bottom: 20px;
@@ -176,7 +177,7 @@
     transition: color 0.2s;
   }
   .admin-link:hover { color: rgba(255,255,255,0.6); }
- 
+
   /* ========== SCENE LABEL ========== */
   .scene-label {
     position: absolute;
@@ -194,7 +195,7 @@
     transition: opacity 0.5s ease;
   }
   .scene-label.visible { opacity: 1; }
- 
+
   /* ========== DIALOGUE BOX ========== */
   #dialogue-area {
     position: absolute;
@@ -206,7 +207,7 @@
     transform: translateY(0);
   }
   #dialogue-area.visible { opacity: 1; }
- 
+
   .speaker-name {
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 13px;
@@ -219,7 +220,7 @@
     margin-left: 4px;
     letter-spacing: 2px;
   }
- 
+
   .dialogue-box {
     background: rgba(250,246,240,0.95);
     backdrop-filter: blur(12px);
@@ -235,14 +236,14 @@
     border-radius: 8px;
     border-left: 3px solid var(--accent-light);
   }
- 
+
   .dialogue-text {
     font-size: 15px;
     line-height: 1.9;
     color: var(--text-dark);
     font-weight: 300;
   }
- 
+
   .click-hint {
     position: absolute;
     bottom: 12px;
@@ -256,7 +257,7 @@
     0%, 100% { opacity: 0.4; }
     50% { opacity: 1; }
   }
- 
+
   /* ========== QUESTION SCREEN ========== */
   #question-screen {
     position: absolute;
@@ -275,7 +276,7 @@
     opacity: 1;
     pointer-events: all;
   }
- 
+
   .q-header {
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 11px;
@@ -285,7 +286,7 @@
     margin-bottom: 10px;
     flex-shrink: 0;
   }
- 
+
   .q-text {
     font-size: 16px;
     font-weight: 400;
@@ -294,7 +295,7 @@
     margin-bottom: 20px;
     flex-shrink: 0;
   }
- 
+
   /* Free text */
   .q-textarea {
     font-family: 'Noto Sans JP', sans-serif;
@@ -317,7 +318,7 @@
   .q-textarea:focus {
     box-shadow: 0 4px 20px rgba(0,0,0,0.2), 0 0 0 2px var(--accent-light);
   }
- 
+
   /* Single select */
   .q-options {
     display: flex;
@@ -332,7 +333,7 @@
   .q-options::-webkit-scrollbar { width: 4px; }
   .q-options::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 2px; }
   .q-options::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
- 
+
   .q-option {
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 13px;
@@ -355,7 +356,7 @@
     border-color: var(--accent);
     color: white;
   }
- 
+
   /* Likert */
   .likert-wrap {
     margin-bottom: 20px;
@@ -364,7 +365,7 @@
     flex-direction: column;
     justify-content: center;
   }
- 
+
   .likert-labels {
     display: flex;
     justify-content: space-between;
@@ -376,7 +377,7 @@
     color: rgba(255,255,255,0.6);
     font-weight: 300;
   }
- 
+
   .likert-buttons {
     display: flex;
     justify-content: center;
@@ -403,7 +404,7 @@
     border-color: var(--accent);
     color: white;
   }
- 
+
   .q-submit {
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 13px;
@@ -427,7 +428,7 @@
     cursor: not-allowed;
     transform: none;
   }
- 
+
   /* ========== END SCREEN ========== */
   #end-screen {
     position: absolute;
@@ -477,7 +478,7 @@
   .replay-btn:hover {
     background: rgba(219,87,138,1);
   }
- 
+
   /* ========== ADMIN ========== */
   #admin-screen {
     position: fixed;
@@ -489,7 +490,7 @@
     justify-content: center;
   }
   #admin-screen.active { display: flex; }
- 
+
   .admin-modal {
     background: var(--cream);
     border-radius: 12px;
@@ -498,7 +499,7 @@
     overflow-y: auto;
     padding: 40px;
   }
- 
+
   .admin-title {
     font-size: 20px;
     font-weight: 700;
@@ -508,14 +509,14 @@
     padding-bottom: 16px;
     border-bottom: 2px solid var(--accent-light);
   }
- 
+
   .admin-pw-wrap {
     display: flex;
     flex-direction: column;
     gap: 12px;
     margin-bottom: 24px;
   }
- 
+
   .admin-pw-input {
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 14px;
@@ -527,7 +528,7 @@
   .admin-pw-input:focus {
     border-color: var(--accent);
   }
- 
+
   .admin-pw-btn {
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 13px;
@@ -539,14 +540,14 @@
     cursor: pointer;
     letter-spacing: 2px;
   }
- 
+
   .admin-err {
     color: var(--accent);
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 12px;
     display: none;
   }
- 
+
   .admin-close {
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 12px;
@@ -557,17 +558,17 @@
     margin-top: 16px;
     letter-spacing: 2px;
   }
- 
+
   .response-list { display: none; }
   .response-list.visible { display: block; }
- 
+
   .response-item {
     margin-bottom: 24px;
     padding-bottom: 20px;
     border-bottom: 1px solid #e8e0d8;
   }
   .response-item:last-child { border-bottom: none; }
- 
+
   .response-q {
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 12px;
@@ -590,7 +591,7 @@
     text-align: center;
     padding: 40px 0;
   }
- 
+
   /* ========== CHARACTER SPRITE ========== */
   #character {
     position: absolute;
@@ -606,7 +607,7 @@
     object-fit: contain;
   }
   #character.visible { opacity: 1; }
- 
+
   /* ========== FADE OVERLAY ========== */
   #fade {
     position: absolute;
@@ -621,9 +622,9 @@
 </style>
 </head>
 <body>
- 
+
 <div id="game">
- 
+
   <!-- Backgrounds -->
   <div class="bg active" id="bg-title"></div>
   <div class="bg" id="bg-sky"></div>
@@ -631,23 +632,23 @@
   <div class="bg" id="bg-office"></div>
   <div class="bg" id="bg-question"></div>
   <div class="bg" id="bg-end"></div>
- 
+
   <!-- Scene label -->
   <div class="scene-label" id="scene-label"></div>
- 
+
   <!-- Character Sprite -->
   <img id="character" src="" alt="まつこ">
- 
+
   <!-- Fade overlay -->
   <div id="fade"></div>
- 
+
   <!-- Title Screen -->
   <div id="title-screen" class="active">
- 
+
     <button class="start-btn" onclick="startGame()">は じ め る</button>
     <span class="admin-link" onclick="openAdmin()">管理者ページ</span>
   </div>
- 
+
   <!-- Dialogue Area -->
   <div id="dialogue-area" onclick="nextStep()">
     <div class="speaker-name" id="speaker-name">まつこ</div>
@@ -656,7 +657,7 @@
       <span class="click-hint">▼</span>
     </div>
   </div>
- 
+
   <!-- Question Screen -->
   <div id="question-screen">
     <div class="q-header">Q U E S T I O N</div>
@@ -664,37 +665,37 @@
     <div id="q-input-area"></div>
     <button class="q-submit" id="q-submit" onclick="submitAnswer()" disabled>回 答 す る</button>
   </div>
- 
+
   <!-- End Screen -->
   <div id="end-screen">
     <div class="end-text">終わり</div>
     <div class="end-sub">ご回答ありがとうございました</div>
     <button class="replay-btn" onclick="location.reload()">も う い ち ど</button>
   </div>
- 
+
 </div>
- 
+
 <!-- Admin Screen -->
 <div id="admin-screen">
   <div class="admin-modal">
     <div class="admin-title">管理者ページ</div>
- 
+
     <div class="admin-pw-wrap" id="pw-wrap">
       <input type="password" class="admin-pw-input" id="pw-input" placeholder="パスワードを入力" onkeydown="if(event.key==='Enter')checkPw()">
       <button class="admin-pw-btn" onclick="checkPw()">ロック解除</button>
       <div class="admin-err" id="pw-err">パスワードが違います</div>
     </div>
- 
+
     <div class="response-list" id="response-list"></div>
- 
+
     <button class="admin-close" onclick="closeAdmin()">✕ 閉じる</button>
   </div>
 </div>
- 
+
 <script>
 const ADMIN_PW = 'admin1234'; // ← パスワードをここで変更できます
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbywLD5JXoZylT90ilvsd8480maMaBblnnGWB2IOk62eX3LHaW4-8yvvE_oCYijzN1Sg/exec';
- 
+
 const QUESTIONS = [
   { id: 'q1', text: 'グループが目指している成果・理想的な状態を教えてください。', type: 'free' },
   { id: 'q2', text: 'グループが抱えている課題と解決策を教えてください。', type: 'free' },
@@ -715,7 +716,7 @@ const QUESTIONS = [
     '要領良く業務を進めてくれるが、ミスがあると責任転嫁しがち'
   ]}
 ];
- 
+
 // Story steps
 const STEPS = [
   { type: 'scene', bg: 'sky', label: '〜４月〜　始まりの時……' },
@@ -757,11 +758,11 @@ const STEPS = [
   { type: 'dialogue', speaker: 'まつこ', sprite: 'genki', text: '少しでも早くグループの役に立てるよう頑張ります！これからよろしくお願いします！' },
   { type: 'end' }
 ];
- 
+
 let stepIndex = 0;
 let currentAnswer = null;
 let answers = {};
- 
+
 function loadAnswers() {
   try {
     const saved = localStorage.getItem('ido_answers');
@@ -773,31 +774,31 @@ function saveAnswers() {
     localStorage.setItem('ido_answers', JSON.stringify(answers));
   } catch(e) {}
 }
- 
+
 loadAnswers();
- 
+
 function setBg(name) {
   document.querySelectorAll('.bg').forEach(b => b.classList.remove('active'));
   const el = document.getElementById('bg-' + name);
   if (el) el.classList.add('active');
 }
- 
+
 function setSceneLabel(text) {
   const el = document.getElementById('scene-label');
   el.textContent = text;
   el.classList.add('visible');
   setTimeout(() => el.classList.remove('visible'), 3000);
 }
- 
+
 function showDialogue(speaker, text, isNarration, sprite) {
   const area = document.getElementById('dialogue-area');
   const nameEl = document.getElementById('speaker-name');
   const box = document.getElementById('dialogue-box');
   const textEl = document.getElementById('dialogue-text');
   const charEl = document.getElementById('character');
- 
+
   hideQuestion();
- 
+
   if (isNarration) {
     nameEl.style.display = 'none';
     box.classList.add('narration');
@@ -813,31 +814,31 @@ function showDialogue(speaker, text, isNarration, sprite) {
       charEl.classList.remove('visible');
     }
   }
- 
+
   textEl.style.whiteSpace = "pre-wrap";
   textEl.textContent = text;
   area.classList.add('visible');
 }
- 
+
 function hideDialogue() {
   document.getElementById('dialogue-area').classList.remove('visible');
 }
- 
+
 function showQuestion(qid) {
   const q = QUESTIONS.find(x => x.id === qid);
   if (!q) return;
- 
+
   hideDialogue();
   setBg('question');
- 
+
   document.getElementById('q-text').textContent = q.text;
   const inputArea = document.getElementById('q-input-area');
   inputArea.innerHTML = '';
   currentAnswer = null;
- 
+
   const submitBtn = document.getElementById('q-submit');
   submitBtn.disabled = true;
- 
+
   if (q.type === 'free') {
     const ta = document.createElement('textarea');
     ta.className = 'q-textarea';
@@ -888,15 +889,15 @@ function showQuestion(qid) {
     wrap.appendChild(btns);
     inputArea.appendChild(wrap);
   }
- 
+
   document.getElementById('question-screen').classList.add('active');
   document.getElementById('character').classList.remove('visible');
 }
- 
+
 function hideQuestion() {
   document.getElementById('question-screen').classList.remove('active');
 }
- 
+
 function submitAnswer() {
   const step = STEPS[stepIndex];
   if (step.type !== 'question') return;
@@ -922,33 +923,29 @@ function submitAnswer() {
   hideQuestion();
   runStep();
 }
- 
+
 function startGame() {
-  // タイトル画面を完全に隠す
   const title = document.getElementById('title-screen');
-  title.style.display = 'none';
   title.classList.remove('active');
-  // タイトル背景を隠す
+  title.classList.add('hidden');
   document.getElementById('bg-title').classList.remove('active');
   stepIndex = 0;
   runStep();
 }
- 
+
 function runStep() {
   const step = STEPS[stepIndex];
   if (!step) return;
- 
+
   if (step.type === 'scene') {
     setBg(step.bg);
     hideDialogue();
     document.getElementById('character').classList.remove('visible');
+    stepIndex++;
     if (step.label) {
       setSceneLabel(step.label);
-      // ラベルありのシーンはクリック待ち
-      stepIndex++;
+      setTimeout(runStep, 1000);
     } else {
-      // ラベルなしのシーンは自動で次へ
-      stepIndex++;
       setTimeout(runStep, 0);
     }
   } else if (step.type === 'narration') {
@@ -971,7 +968,7 @@ function runStep() {
     }, 800);
   }
 }
- 
+
 function nextStep() {
   const step = STEPS[stepIndex];
   if (!step) return;
@@ -983,7 +980,7 @@ function nextStep() {
   stepIndex++;
   runStep();
 }
- 
+
 // ゲーム画面クリックで進む
 document.getElementById('game').addEventListener('click', function(e) {
   // ボタンやリンクのクリックは除外
@@ -996,7 +993,7 @@ document.getElementById('game').addEventListener('click', function(e) {
   }
   nextStep();
 });
- 
+
 // Enterキーで進む
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Enter') {
@@ -1011,7 +1008,7 @@ document.addEventListener('keydown', function(e) {
     nextStep();
   }
 });
- 
+
 // スプレッドシートに送信
 function sendToSpreadsheet() {
   const payload = QUESTIONS.map(q => ({
@@ -1025,7 +1022,7 @@ function sendToSpreadsheet() {
     body: JSON.stringify(payload)
   }).catch(err => console.error('送信エラー:', err));
 }
- 
+
 // Admin
 function openAdmin() {
   document.getElementById('admin-screen').classList.add('active');
@@ -1034,11 +1031,11 @@ function openAdmin() {
   document.getElementById('pw-input').value = '';
   document.getElementById('pw-err').style.display = 'none';
 }
- 
+
 function closeAdmin() {
   document.getElementById('admin-screen').classList.remove('active');
 }
- 
+
 function checkPw() {
   const val = document.getElementById('pw-input').value;
   if (val === ADMIN_PW) {
@@ -1048,7 +1045,7 @@ function checkPw() {
     document.getElementById('pw-err').style.display = 'block';
   }
 }
- 
+
 function showResponses() {
   const list = document.getElementById('response-list');
   list.innerHTML = '';
